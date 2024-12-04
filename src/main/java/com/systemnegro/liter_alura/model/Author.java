@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,4 +21,26 @@ public class Author {
     private String name;
     private Integer birthYear;
     private Integer deathYear;
+
+    public Author(AuthorApiResponse author) {
+        this.books = new ArrayList<>();
+        this.name = author.name();
+        this.birthYear = author.birthYear();
+        this.deathYear = author.deathYear();
+    }
+
+    public void addBook(Book book) {
+        this.books.add(book);
+        book.setAuthor(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Author{"+
+                ", books=" + books +
+                ", name='" + name + '\'' +
+                ", birthYear=" + birthYear +
+                ", deathYear=" + deathYear +
+                '}';
+    }
 }

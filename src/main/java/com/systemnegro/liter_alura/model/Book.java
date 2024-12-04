@@ -19,4 +19,20 @@ public class Book {
     private String title;
     private Integer downloadCount;
     private String language;
+
+    public Book(BookApiResponse response) {
+        this.title = response.title();
+        this.downloadCount = response.downloadCount();
+        this.language = response.languages().getFirst();
+
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", downloadCount=" + downloadCount +
+                ", language='" + language + '\'' +
+                '}';
+    }
 }
