@@ -20,11 +20,10 @@ public class Book {
     private Integer downloadCount;
     private String language;
 
-    public Book(BookApiResponse response) {
-        this.title = response.title();
-        this.downloadCount = response.downloadCount();
-        this.language = response.languages().getFirst();
-
+    public Book(BookApiResponse book) {
+        this.title = book.title();
+        this.downloadCount = book.downloadCount();
+        this.language = book.languages().getFirst();
     }
 
     @Override
