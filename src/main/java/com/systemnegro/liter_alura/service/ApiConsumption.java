@@ -7,11 +7,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ApiConsumption {
-    public String consumption() {
+    public String consumption(String address) {
         HttpResponse<String> response;
         try (HttpClient client = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(""))
+                    .uri(URI.create(address))
                     .build();
             try {
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
