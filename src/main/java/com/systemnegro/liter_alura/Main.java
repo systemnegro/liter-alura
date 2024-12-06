@@ -39,11 +39,13 @@ public class Main {
             switch (option) {
                 case 1 -> searchBookByTitle();
                 case 2 -> searchRegisteredBooks();
+                case 3 -> searchForRegisteredAuthors();
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida");
             }
         }
     }
+
 
     private void searchBookByTitle() {
         System.out.println("Insira o nome do livro que deseja procurar: ");
@@ -82,5 +84,16 @@ public class Main {
                 }
         );
     }
+
+    private void searchForRegisteredAuthors() {
+        List<Author> authors = repository.findAll();
+
+        if (authors.isEmpty()) {
+            System.out.println("Nenhum autor registrado ");
+            menu();
+        }
+        authors.forEach(System.out::println);
+    }
+
 
 }
