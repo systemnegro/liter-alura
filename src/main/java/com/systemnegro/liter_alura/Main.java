@@ -41,6 +41,7 @@ public class Main {
                 case 2 -> searchRegisteredBooks();
                 case 3 -> searchForRegisteredAuthors();
                 case 4 -> searchForLivingAuthorsByYear();
+                case 5 -> searchBooksByLanguage();
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida");
             }
@@ -65,7 +66,6 @@ public class Main {
         List<Book> books = repository.findAllBook();
         if (books.isEmpty()) {
             System.out.println("Nenhum livro cadastrado");
-            menu();
         }
         books.forEach(System.out::println);
     }
@@ -73,10 +73,7 @@ public class Main {
     private void save(Book book, Author author) {
         Optional<Book> bookFound = repository.findByTitle(book.getTitle());
         bookFound.ifPresentOrElse(
-                b -> {
-                    System.out.println("Livro já cadastrado tente outro");
-                    menu();
-                },
+                b -> System.out.println("Livro já cadastrado tente outro"),
                 () -> {
                     Author authorToSave = repository.findByNameContainingIgnoreCase(author.getName())
                             .orElse(author);
@@ -91,7 +88,6 @@ public class Main {
 
         if (authors.isEmpty()) {
             System.out.println("Nenhum autor registrado ");
-            menu();
         }
         authors.forEach(System.out::println);
     }
@@ -115,10 +111,25 @@ public class Main {
         List<Author> authors = repository.findLivingAuthorsByYear(year);
         if (authors.isEmpty()) {
             System.out.println("Nenhum autor encontrado ");
-            menu();
         }
 
         authors.forEach(System.out::println);
+    }
+
+    private void searchBooksByLanguage(){
+        System.out.print("""
+                Insira o idioma para realizar a busca:
+                es - espanhol
+                en - inglês
+                fr - francês
+                pt - português
+                """);
+        var language = scanner.nextLine();
+        List<Book> books = repository.findBooksByLanguage(language);
+        if (books.isEmpty()){
+            System.out.println("Não temos livros com esse idioma no banco de dados");
+        }
+        books.forEach(System.out::println);
     }
 
 

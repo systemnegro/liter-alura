@@ -23,4 +23,7 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
     AND (a.deathYear IS NULL OR a.deathYear >= :year)
 """)
     List<Author> findLivingAuthorsByYear( Integer year);
+
+    @Query("select b from Author a join a.books b where b.language ilike %:language%")
+    List<Book> findBooksByLanguage(String language);
 }
