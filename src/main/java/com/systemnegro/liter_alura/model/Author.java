@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "autores")
@@ -29,6 +30,9 @@ public class Author {
         this.deathYear = author.deathYear();
     }
 
+    public Author() {
+    }
+
     public void addBook(Book book) {
         this.books.add(book);
         book.setAuthor(this);
@@ -36,11 +40,17 @@ public class Author {
 
     @Override
     public String toString() {
-        return "Author{"+
-                ", books=" + books +
-                ", name='" + name + '\'' +
-                ", birthYear=" + birthYear +
-                ", deathYear=" + deathYear +
-                '}';
+        return String.format("""
+                Autor: %s
+                Ano de nascimento: %d
+                Ano de falecimento: %d
+                Livros: %s
+                """,
+                name,
+                birthYear,
+                deathYear,
+                books.stream()
+                        .map(Book::getTitle)
+                        .collect(Collectors.joining(",")));
     }
 }

@@ -25,13 +25,23 @@ public class Book {
         this.downloadCount = book.downloadCount();
         this.language = book.languages().getFirst();
     }
+    public Book(){
+
+    }
 
     @Override
     public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", downloadCount=" + downloadCount +
-                ", language='" + language + '\'' +
-                '}';
+        return String.format("""
+                Livro
+                Título: %s
+                Autor: %s
+                Idioma: %s
+                Número de downloads: %d
+                """,
+                title,
+                author.getName(),
+                language,
+                downloadCount);
     }
+
 }
