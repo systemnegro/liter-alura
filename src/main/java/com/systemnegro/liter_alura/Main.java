@@ -8,6 +8,8 @@ import com.systemnegro.liter_alura.repository.AuthorRepository;
 import com.systemnegro.liter_alura.service.ApiConsumption;
 import com.systemnegro.liter_alura.service.JsonSerializationService;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -36,6 +38,7 @@ public class Main {
 
             switch (option) {
                 case 1 -> searchBookByTitle();
+                case 2 -> searchRegisteredBooks();
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida");
             }
@@ -51,8 +54,33 @@ public class Main {
 
         Book book = new Book(obj.results().getFirst());
         Author author = new Author(obj.results().getFirst().authors().getFirst());
-        author.addBook(book);
+        save(book, author);
 
-        repository.save(author);
     }
+
+    private void searchRegisteredBooks() {
+        List<Book> books = repository.findAllBook();
+        if (books.isEmpty()) {
+            System.out.println("Nenhum livro cadastrado");
+            menu();
+        }
+        books.forEach(System.out::println);
+    }
+
+    private void save(Book book, Author author) {
+        Optional<Book> bookFound = repository.findByTitle(book.getTitle());
+        bookFound.ifPresentOrElse(
+                b -> {
+                    System.out.println("Livro já cadastrado tente outro");
+                    menu();
+                },
+                () -> {
+                    Author authorToSave = repository.findByNameContainingIgnoreCase(author.getName())
+                            .orElse(author);
+                    authorToSave.addBook(book);
+                    repository.save(authorToSave);
+                }
+        );
+    }
+
 }
