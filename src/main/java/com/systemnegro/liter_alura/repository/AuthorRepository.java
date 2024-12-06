@@ -16,4 +16,11 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
     Optional<Book> findByTitle(String title);
 
     Optional<Author> findByNameContainingIgnoreCase(String name);
+
+    @Query("""
+    SELECT a FROM Author a
+    WHERE a.birthYear <= :year
+    AND (a.deathYear IS NULL OR a.deathYear >= :year)
+""")
+    List<Author> findLivingAuthorsByYear( Integer year);
 }

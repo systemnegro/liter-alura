@@ -40,6 +40,7 @@ public class Main {
                 case 1 -> searchBookByTitle();
                 case 2 -> searchRegisteredBooks();
                 case 3 -> searchForRegisteredAuthors();
+                case 4 -> searchForLivingAuthorsByYear();
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida");
             }
@@ -92,6 +93,31 @@ public class Main {
             System.out.println("Nenhum autor registrado ");
             menu();
         }
+        authors.forEach(System.out::println);
+    }
+
+    private void searchForLivingAuthorsByYear() {
+        System.out.println("Insira o ano que deseja pesquisar ");
+
+        int year;
+        while (true) {
+            if (scanner.hasNextInt()) {
+                year = scanner.nextInt();
+                break;
+            } else if (scanner.hasNextDouble()) {
+                System.out.println("Por favor, insira apenas um número inteiro.");
+                scanner.next();
+            } else {
+                System.out.println("Entrada inválida! Por favor, insira um número.");
+                scanner.next();
+            }
+        }
+        List<Author> authors = repository.findLivingAuthorsByYear(year);
+        if (authors.isEmpty()) {
+            System.out.println("Nenhum autor encontrado ");
+            menu();
+        }
+
         authors.forEach(System.out::println);
     }
 
